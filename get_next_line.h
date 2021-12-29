@@ -13,13 +13,13 @@
 #ifndef GET_NEXT_LINE
 # define GET_NEXT_LINE
 
+# include <fcntl.h>
 # include <unistd.h>
 # include <stdlib.h>
 # include <stddef.h>
 
 char	*get_next_line(int fd);
-char	*ft_strndup(const char *src, size_t n);
-char	*ft_strncpy(char *dest, const char *src, size_t n);
-size_t	ft_strlen(const char *start);
+char	*ft_strnjoin(const char *dest, const char *src, size_t n);
+size_t	ft_strlen(const char *start);//à retirer
 
 #endif

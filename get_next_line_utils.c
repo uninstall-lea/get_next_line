@@ -17,24 +17,25 @@ size_t	ft_strlen(const char *start)
 	const char	*end;
 
 	end = start;
-	while (*end)
+	while (end && *end)
 		end++;
 	return (end - start);
 }
 
-char	*ft_strncpy(char *dest, const char *src, size_t n)
+void	*ft_memcpy(void *dest, const void *src, size_t n)
 {
-	size_t	i;
+	size_t		i;
+	char		*d;
+	const char	*s;
 
 	i = 0;
-	while (i < n && src[i])
-	{
-		dest[i] = src[i];
-		i++;
-	}
+	d = (char *) dest;
+	s = (char *) src;
+	if (!dest && !src)
+		return (NULL);
 	while (i < n)
 	{
-		dest[i] = '\0';
+		d[i] = s[i];
 		i++;
 	}
 	return (dest);
@@ -47,7 +48,44 @@ char	*ft_strndup(const char *src, size_t n)
 	new_str = malloc(sizeof(char) * n + 1);
 	if (!new_str)
 		return (NULL);
-	new_str = ft_strncpy(new_str, src, n + 1);
-	new_str[n] = '\0';
+	ft_memcpy(new_str, src, n + 1);
+	return (new_str);
+}
+
+char	*ft_strncpy(char *dest, const char *src, size_t n)
+{
+	size_t	i;
+
+	i = 0;
+	while (src[i] && i < n)
+	{
+		dest[i] = src[i];
+		i++;
+	}
+	while (i < n)
+	{
+		dest[i] = '\0';
+		i++;
+	}
+	return (dest);
+}
+
+char	*ft_strnjoin(const char *s1, const char *s2, size_t n)
+{
+	size_t	s1_len;
+	size_t	s2_len;
+	char	*new_str;
+
+	s1_len = ft_strlen(s1);
+	s2_len = ft_strlen(s2);
+	if (n > s2_len)
+		n = s2_len;
+	new_str = malloc(sizeof(char) * (s1_len + n + 1));
+	if (new_str == NULL)
+		return (NULL);
+	if (!s1)
+		return (ft_strndup(s2, n));
+	ft_strncpy(new_str, s1, s1_len + 1);
+	ft_strncpy(new_str + s1_len, s2, n + 1);
 	return (new_str);
 }
