@@ -11,58 +11,69 @@
 /* ************************************************************************** */
 
 #include "get_next_line.h"
-#include <fcntl.h>
-#include <stdio.h> // à retirer
+
+static ssize_t	handle_end_of_buf(int fd, int *start, int *size, char *buf)
+{
+	ft_memset(buf, '\0', BUFFER_SIZE);
+	*size = 0;
+	*start = 0;
+	return (read(fd, buf, BUFFER_SIZE));
+}
 
 static char	*read_and_fill(int fd, char *buf)
 {
-	char			*line;
-	static size_t	size = 0;
+	char		*line;
+	int			start;
+	static int	size = 0;
 
 	line = NULL;
+	start = size;
 	while (buf[size] && buf[size] != '\n')
 	{
-		if (size == BUFFER_SIZE)
+		if (size == BUFFER_SIZE - 1)
 		{
-			size = 0;
-			line = ft_strnjoin(line, buf, BUFFER_SIZE);
-			if (read(fd, buf, BUFFER_SIZE) < 0)
-				return (NULL);
+			line = ft_strnjoin(line, &buf[start], BUFFER_SIZE - start);
+			if (handle_end_of_buf(fd, &start, &size, buf) <= 0)
+				return (line);
 		}
 		else
 			size++;
 	}
-	line = ft_strnjoin(line, buf, size);
+	size += 1;
+	line = ft_strnjoin(line, &buf[start], size - start);
+	if (size >= BUFFER_SIZE - 1)
+		handle_end_of_buf(fd, &start, &size, buf);
+	if (line[0] == '\0')
+		return (free(line), NULL);
 	return (line);
 }
 
-//tester read return value//
 char	*get_next_line(int fd)
 {
 	static char	buf[BUFFER_SIZE + 1] = "";
 
 	if (fd < 0 || BUFFER_SIZE == 0)
 		return (NULL);
-	if (!buf[0])
-		read(fd, buf, BUFFER_SIZE);
+	if (!buf[0] && read(fd, buf, BUFFER_SIZE) <= 0)
+		return (NULL);
 	return (read_and_fill(fd, buf));
 }
-
-void	print_s(char *s)
-{
-	write(1, s, ft_strlen(s));
-}
-
+/*
 int	main(int ac, char **av)
 {
 	(void)ac;
 	int fd = open(*(av + 1), O_RDONLY);
 	char *res = get_next_line(fd);
-	print_s(res);
-	free(res);
-	res = get_next_line(fd);
-	print_s(res);
-	free(res);
+	int i = 0;
+	printf("%s", res);
+	while (i < 20)
+	{
+		res = get_next_line(fd);
+		printf("%s", res);
+		free(res);
+		i++;
+	}
 	close(fd);
 	return (0);
 }
+*/
