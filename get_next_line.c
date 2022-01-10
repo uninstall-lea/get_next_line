@@ -6,7 +6,7 @@
 /*   By: lbisson <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/16 22:44:11 by lbisson           #+#    #+#             */
-/*   Updated: 2022/01/10 16:11:58 by lbisson          ###   ########.fr       */
+/*   Updated: 2022/01/10 16:52:12 by lbisson          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,6 +28,8 @@ static char	*read_and_fill(int fd, char *buf)
 
 	line = NULL;
 	start = size;
+	if (size == BUFFER_SIZE)
+		handle_end_of_buf(fd, &start, &size, buf);
 	while (buf[size] && buf[size] != '\n')
 	{
 		if (size == BUFFER_SIZE - 1)
@@ -41,8 +43,6 @@ static char	*read_and_fill(int fd, char *buf)
 	}
 	size += 1;
 	line = ft_strnjoin(line, &buf[start], size - start);
-	if (size >= BUFFER_SIZE - 1)
-		handle_end_of_buf(fd, &start, &size, buf);
 	if (line[0] == '\0')
 		return (free(line), NULL);
 	return (line);
@@ -58,30 +58,3 @@ char	*get_next_line(int fd)
 		return (NULL);
 	return (read_and_fill(fd, buf));
 }
-
-void _leaks(void)
-{
-system("leaks a.out");
-}
-
-#include <stdio.h>
-int	main(int ac, char **av)
-{
-	(void)ac;
-	int fd = open(*(av + 1), O_RDONLY);
-	char *res = get_next_line(fd);
-	int i = 0;
-	printf("%s", res);
-	free(res);
-	while (i < 100)
-	{
-		res = get_next_line(fd);
-		printf("%s", res);
-		free(res);
-		i++;
-	}
-	close(fd);
-	atexit(_leaks);
-	return (0);
-}
-
