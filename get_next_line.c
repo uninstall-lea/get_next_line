@@ -6,7 +6,7 @@
 /*   By: lbisson <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/16 22:44:11 by lbisson           #+#    #+#             */
-/*   Updated: 2022/01/10 15:57:44 by lbisson          ###   ########.fr       */
+/*   Updated: 2022/01/10 16:11:58 by lbisson          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,6 +72,7 @@ int	main(int ac, char **av)
 	char *res = get_next_line(fd);
 	int i = 0;
 	printf("%s", res);
+	free(res);
 	while (i < 100)
 	{
 		res = get_next_line(fd);
