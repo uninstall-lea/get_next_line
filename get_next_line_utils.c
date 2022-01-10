@@ -6,7 +6,7 @@
 /*   By: lbisson <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/17 01:07:20 by lbisson           #+#    #+#             */
-/*   Updated: 2021/12/17 01:54:42 by lbisson          ###   ########.fr       */
+/*   Updated: 2022/01/10 15:50:24 by lbisson          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,7 +69,7 @@ char	*ft_strndup(const char *src, size_t n)
 	return (new_str);
 }
 
-char	*ft_strnjoin(const char *s1, const char *s2, size_t n)
+char	*ft_strnjoin(char *s1, const char *s2, size_t n)
 {
 	size_t	s1_len;
 	size_t	s2_len;
@@ -82,10 +82,11 @@ char	*ft_strnjoin(const char *s1, const char *s2, size_t n)
 	if (n > s2_len)
 		n = s2_len;
 	new_str = malloc(sizeof(char) * (s1_len + n + 1));
-	if (new_str == NULL)
+	if (!new_str)
 		return (NULL);
 	ft_strncpy(new_str, s1, s1_len);
 	ft_strncpy(new_str + s1_len, s2, n);
+	free(s1);
 	new_str[s1_len + n] = '\0';
 	return (new_str);
 }

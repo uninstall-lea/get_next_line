@@ -6,7 +6,7 @@
 /*   By: lbisson <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/16 22:44:11 by lbisson           #+#    #+#             */
-/*   Updated: 2021/12/17 03:27:28 by lbisson          ###   ########.fr       */
+/*   Updated: 2022/01/10 15:57:44 by lbisson          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,7 +58,13 @@ char	*get_next_line(int fd)
 		return (NULL);
 	return (read_and_fill(fd, buf));
 }
-/*
+
+void _leaks(void)
+{
+system("leaks a.out");
+}
+
+#include <stdio.h>
 int	main(int ac, char **av)
 {
 	(void)ac;
@@ -66,7 +72,7 @@ int	main(int ac, char **av)
 	char *res = get_next_line(fd);
 	int i = 0;
 	printf("%s", res);
-	while (i < 20)
+	while (i < 100)
 	{
 		res = get_next_line(fd);
 		printf("%s", res);
@@ -74,6 +80,7 @@ int	main(int ac, char **av)
 		i++;
 	}
 	close(fd);
+	atexit(_leaks);
 	return (0);
 }
-*/
+
