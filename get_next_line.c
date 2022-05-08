@@ -34,7 +34,7 @@ static char	*read_and_fill(int fd, char *buf)
 	{
 		if (size == BUFFER_SIZE - 1)
 		{
-			line = ft_strnjoin(line, &buf[start], BUFFER_SIZE - start);
+			line = ft_strnjoin_gnl(line, &buf[start], BUFFER_SIZE - start);
 			if (handle_end_of_buf(fd, &start, &size, buf) <= 0)
 				return (line);
 		}
@@ -42,7 +42,7 @@ static char	*read_and_fill(int fd, char *buf)
 			size++;
 	}
 	size += 1;
-	line = ft_strnjoin(line, &buf[start], size - start);
+	line = ft_strnjoin_gnl(line, &buf[start], size - start);
 	if (line[0] == '\0')
 		return (free(line), NULL);
 	return (line);
