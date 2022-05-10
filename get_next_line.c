@@ -6,7 +6,7 @@
 /*   By: lbisson <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/16 22:44:11 by lbisson           #+#    #+#             */
-/*   Updated: 2022/05/09 20:28:43 by lbisson          ###   ########.fr       */
+/*   Updated: 2022/05/10 13:58:14 by lbisson          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,7 +44,7 @@ static char	*read_and_fill(int fd, char *buf)
 			size++;
 	}
 	line = ft_strnjoin_gnl(line, &buf[start], ++size - start);
-	if (line[0] == '\0')
+	if (line && line[0] == '\0')
 		return (free(line), NULL);
 	return (line);
 }
@@ -53,7 +53,7 @@ char	*get_next_line(int fd)
 {
 	static char	buf[BUFFER_SIZE + 1] = "";
 
-	if (fd < 0 || BUFFER_SIZE == 0)
+	if (fd < 0 || BUFFER_SIZE <= 0)
 		return (NULL);
 	if (!buf[0] && read(fd, buf, BUFFER_SIZE) <= 0)
 		return (NULL);

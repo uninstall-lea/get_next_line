@@ -6,23 +6,11 @@
 /*   By: lbisson <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/17 01:07:20 by lbisson           #+#    #+#             */
-/*   Updated: 2022/01/10 15:50:24 by lbisson          ###   ########.fr       */
+/*   Updated: 2022/05/10 13:59:55 by lbisson          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "get_next_line.h"
-
-size_t	ft_strlen(const char *start)
-{
-	const char	*end;
-
-	if (!start)
-		return (0);
-	end = start;
-	while (*end)
-		end++;
-	return (end - start);
-}
 
 void	*ft_memset(void *ptr, int c, size_t n)
 {
@@ -39,7 +27,19 @@ void	*ft_memset(void *ptr, int c, size_t n)
 	return (ptr);
 }
 
-char	*ft_strncpy(char *dest, const char *src, size_t n)
+static size_t	ft_strlen(const char *start)
+{
+	const char	*end;
+
+	if (!start)
+		return (0);
+	end = start;
+	while (*end)
+		end++;
+	return (end - start);
+}
+
+static char	*ft_strncpy(char *dest, const char *src, size_t n)
 {
 	size_t	i;
 
@@ -57,7 +57,7 @@ char	*ft_strncpy(char *dest, const char *src, size_t n)
 	return (dest);
 }
 
-char	*ft_strndup(const char *src, size_t n)
+static char	*ft_strndup(const char *src, size_t n)
 {
 	char	*new_str;
 
