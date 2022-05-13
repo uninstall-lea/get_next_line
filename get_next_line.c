@@ -19,6 +19,7 @@ static ssize_t	handle_end_of_buf(int fd, int *start, int *size, char *buf)
 	*start = 0;
 	return (read(fd, buf, BUFFER_SIZE));
 }
+
 static void	handle_end_of_file(int fd, int *start, int *size, char *buf)
 {
 	if (!buf[*size])
