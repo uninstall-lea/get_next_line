@@ -20,13 +20,6 @@ static ssize_t	handle_end_of_buf(int fd, int *start, int *size, char *buf)
 	return (read(fd, buf, BUFFER_SIZE));
 }
 
-static void	handle_end_of_file(int fd, int *start, int *size, char *buf)
-{
-	if (!buf[*size])
-		handle_end_of_buf(fd, start, size, buf);
-	return ;
-}
-
 /* Pardonnez-moi mes freres car j'ai peche... */
 static char	*read_and_fill(int fd, char *buf)
 {
@@ -34,7 +27,7 @@ static char	*read_and_fill(int fd, char *buf)
 	int			start;
 	static int	size = 0;
 
-	handle_end_of_file(fd, &start, &size, buf);
+	(void)(!buf[size] && handle_end_of_buf(fd, &start, &size, buf));
 	line = ((start = size), NULL);
 	(void)(size == BUFFER_SIZE && handle_end_of_buf(fd, &start, &size, buf));
 	while (buf[size] && buf[size] != '\n')
