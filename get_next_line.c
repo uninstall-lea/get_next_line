@@ -27,6 +27,7 @@ static void	handle_end_of_file(int fd, int *start, int *size, char *buf)
 	return ;
 }
 
+/* Pardonnez-moi mes freres car j'ai peche... */
 static char	*read_and_fill(int fd, char *buf)
 {
 	char		*line;
@@ -35,8 +36,7 @@ static char	*read_and_fill(int fd, char *buf)
 
 	handle_end_of_file(fd, &start, &size, buf);
 	line = ((start = size), NULL);
-	if (size == BUFFER_SIZE)
-		handle_end_of_buf(fd, &start, &size, buf);
+	(void)(size == BUFFER_SIZE && handle_end_of_buf(fd, &start, &size, buf));
 	while (buf[size] && buf[size] != '\n')
 	{
 		if (size == BUFFER_SIZE - 1)
@@ -51,6 +51,7 @@ static char	*read_and_fill(int fd, char *buf)
 			size++;
 	}
 	line = ft_strnjoin_gnl(line, &buf[start], ++size - start);
+	(void)(!*buf && (size = 0));
 	if (line && line[0] == '\0')
 		return (free(line), NULL);
 	return (line);
