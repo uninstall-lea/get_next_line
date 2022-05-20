@@ -29,7 +29,6 @@ static char	*read_and_fill(int fd, char *buf)
 
 	(void)(!buf[size] && handle_end_of_buf(fd, &start, &size, buf));
 	line = ((start = size), NULL);
-	(void)(size == BUFFER_SIZE && handle_end_of_buf(fd, &start, &size, buf));
 	while (buf[size] && buf[size] != '\n')
 	{
 		if (size == BUFFER_SIZE - 1)
